@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from src.schemas import UserQueryRequest, AIResponse
 from src.config_manager import get_configuration
 from src.prompt_orchestrator import build_prompt
-from src.model_adapter import call_model
+from src.model_adaptor import call_model
 from src.response_handler import format_response
 from src.external_integration import fetch_external_data
 
@@ -28,14 +28,21 @@ def handle_query(request: UserQueryRequest):
     parameters = config["parameters"]
 
     # 2. If needed, fetch external data or do any custom steps
-    external_data = fetch_external_data(request.user_context or {})
+    # Check if the user context contains a question for external API
+    user_context = request.user_context or {}
+    if 'question' in user_context:
+        external_data = fetch_external_data(user_context)
+        # Add the external data to the user context
+        user_context['external_data'] = external_data
+    else:
+        # No external data needed
+        user_context['external_data'] = None
 
     # 3. Build final prompt
-    # Optionally include external data in the prompt if desired
     final_prompt = build_prompt(
         system_prompt=system_prompt,
-        user_input=request.user_input + " " + external_data,
-        user_context=request.user_context or {}
+        user_input=request.user_input,
+        user_context=user_context
     )
 
     # 4. Call the AI model
