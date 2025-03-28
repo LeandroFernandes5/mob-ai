@@ -1,0 +1,13 @@
+# Model Providers Configuration
+model_providers:
+  openai:
+    api_key: ${OPENAI_API_KEY}  # Will be replaced by environment variable
+    model: gpt-3.5-turbo
+    max_tokens: 150
+    system_prompt: "You are a helpful assistant providing concise, accurate information."
+  
+  anthropic:
+    api_key: ${ANTHROPIC_API_KEY}  # Optional additional provider
+    model: claude-2
+    max_tokens: 200
+    system_prompt: "You are an AI assistant focused on providing detailed and helpful responses."
