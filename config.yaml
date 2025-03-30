@@ -4,8 +4,25 @@ model_providers:
     api_key: ${OPENAI_API_KEY}  # Will be replaced by environment variable
     model: gpt-3.5-turbo
     max_tokens: 150
-    system_prompt: "You are a helpful assistant providing concise, accurate information."
-  
+    system_prompt: |
+      I'm currently building a solution for a telecom company. They provide me with the survey feedback from their customers while they are travelling / on roaming internationally and I have to evaluate the feedback given and determine if the customer is at-risk or not. Its a binary selection, meaning its either 0 (not at risk) or 1 (at risk). The user will send you a json object with a unique id and the answer to the feedback survey. Below follows n example of the json object:
+      {"unique_id": 1023, "answer": "a test"}
+
+      You have to reply with a json schema as well, below follows an example of what your response schema should look like:
+      {"unique_id": 1023, "answer": "a test", "result": 0}
+
+      The user might and will send various types of feedback, positive, negative and negative with expressions of intent to change telecom providers. Below I'm sharing a few examples of what At-Risk comment would look like.
+      1. "I'm switching to T-Mobile next week due to these hidden fees",
+      2. "I've had so many dropped calls and slow internet lately. If this doesnt improve soon, I ll be switching providers."
+      3. "You forgot to turn on my international plan that we paid a 100 dollars for. If you fuck up and charge us on the bill we are switching to AT&t"
+
+      Below follows a few examples of negative sentiment but NOT at risk where the feedback doesn't express intent to change providers.
+      "While the coverage is decent, I wish prices were lower",
+      "Never leaving Verizon - best network in my area!"
+      "I ve been using this provider for years, and it has always met my needs. No reason to switch."
+
+      Please, limit your response to the json schema.
+
   anthropic:
     api_key: ${ANTHROPIC_API_KEY}  # Optional additional provider
     model: claude-2
