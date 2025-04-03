@@ -109,3 +109,16 @@ class ConfigManager:
             api_key = os.getenv(f'{model_provider.upper()}_API_KEY')
         
         return api_key
+
+def get_configuration(interface_id: str) -> Dict[str, Any]:
+    """
+    Convenience function to retrieve configuration for a given interface.
+    
+    Args:
+        interface_id (str): Identifier for the interface configuration
+    
+    Returns:
+        Dict[str, Any]: Configuration for the specified interface
+    """
+    manager = ConfigManager()
+    return manager.get_configuration(interface_id)
