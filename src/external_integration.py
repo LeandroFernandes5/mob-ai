@@ -79,11 +79,11 @@ def fetch_external_data(context: dict) -> str:
 
         # Log all relevant information before sending the API request
         logging.info(
-            "Preparing to send API request to %s | interface_id=%s | model=%s | max_tokens=%s | system_prompt_preview=%s | question=%s | apikey=%s",
+            "Preparing to send API request to %s | interface_id=%s | model=%s | system_prompt_preview=%s | question=%s | apikey=%s",
             model_provider,
             interface_id,
             model_config.get('model', 'gpt-3.5-turbo'),
-            model_config.get('max_tokens', 150),
+            #model_config.get('max_tokens', 150),
             (system_prompt[:60] + '...') if system_prompt and len(system_prompt) > 60 else system_prompt,
             question,
             api_key
@@ -95,8 +95,7 @@ def fetch_external_data(context: dict) -> str:
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": question}
-            ],
-            max_tokens=model_config.get('max_tokens', 150)
+            ]
         )
 
         # Extract and return the response text
