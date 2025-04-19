@@ -19,8 +19,8 @@ interfaces:
           "While the coverage is decent, I wish prices were lower",
           "Never leaving Verizon - best network in my area!"
           "I ve been using this provider for years, and it has always met my needs. No reason to switch."
-        max_tokens: 150
+        model: gpt-4.1-mini-2025-04-14
+        
       # anthropic:
       #   api_key: ${ANTHROPIC_API_KEY}
       #   system_prompt: "You are an AI assistant focused on providing detailed and helpful responses."
-      #   max_tokens: 200
