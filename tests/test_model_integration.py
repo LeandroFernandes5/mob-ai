@@ -1,14 +1,11 @@
-# DEPRECATED: Please use test_model_integration.py instead
-# This file is kept for backward compatibility
-
 import requests
 import unittest
 
 BASE_URL = "http://localhost:8000"
 
-class TestOpenAIIntegration(unittest.TestCase):
+class TestModelIntegration(unittest.TestCase):
 
-    def test_at_risk_interface_default_provider(self):
+    def test_at_risk_interface(self):
         endpoint = f"{BASE_URL}/v1/query"
         payload = {
             "interface_id": "at_risk_interface",
@@ -19,7 +16,7 @@ class TestOpenAIIntegration(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_local_model_integration(self):
-        endpoint = f"{BASE_URL}/v1/query"
+        endpoint = f"{BASE_URL}/v1/custom_query"
         payload = {
             "interface_id": "at_risk_interface",
             "model_provider": "local_model",
@@ -32,4 +29,4 @@ class TestOpenAIIntegration(unittest.TestCase):
         self.assertIn("Local model response", response.json().get("response", ""))
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main() 
