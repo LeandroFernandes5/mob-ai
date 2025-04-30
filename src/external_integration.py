@@ -2,6 +2,7 @@ import importlib
 import logging
 import os
 import requests
+import httpx
 import src.log_config
 from .config_manager import ConfigManager
 
@@ -20,7 +21,14 @@ def load_model_client(model_provider: str, api_key: str):
         # Dynamically import the module based on the model provider
         module = importlib.import_module(model_provider)
         client_class = getattr(module, 'OpenAI')  # Assumes a standard naming convention
-        return client_class(api_key=api_key)
+        
+        # Check if secure connection should be disabled
+        disable_verify = os.environ.get('MOBAI_DISABLE_SSL_VERIFY', 'false').lower() == 'true'
+        if disable_verify:
+            http_client = httpx.Client(verify=False)
+            return client_class(api_key=api_key, http_client=http_client)
+        else:
+            return client_class(api_key=api_key)
     except (ImportError, AttributeError) as e:
         raise ValueError(f"Could not load client for {model_provider}: {e}")
 

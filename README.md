@@ -54,6 +54,20 @@ The platform now supports integration with OpenAI's API to fetch external data b
 1. Include a `question` key in the user context when making a request to the API.
 2. The question will be sent to OpenAI, and the response will be included in the context for the AI model.
 
+### SSL Verification Control
+
+You can control SSL verification for OpenAI API requests using the `MOBAI_DISABLE_SSL_VERIFY` environment variable:
+
+```bash
+# To disable SSL verification (not recommended for production)
+export MOBAI_DISABLE_SSL_VERIFY=true
+
+# To enable SSL verification (default and recommended)
+export MOBAI_DISABLE_SSL_VERIFY=false
+```
+
+**Note**: Disabling SSL verification should only be used in development or testing environments. It is not recommended for production use as it can expose your application to security risks.
+
 For more details, see the [OpenAI Integration Guide](docs/openai_integration.md).
 
 ## Local Model Integration
