@@ -141,3 +141,25 @@ The platform supports integration with locally-hosted models through services li
    ```
 
 This integration allows you to keep all AI interactions within your local environment without sending data to third-party cloud services.
+
+## Streamlit GUI
+
+The platform includes a Streamlit-based web interface for easy interaction with different use cases:
+
+1. **Install Streamlit**:
+   ```bash
+   pip install streamlit
+   ```
+
+2. **Run the GUI**:
+   ```bash
+   streamlit run streamlit_app.py
+   ```
+
+3. **Using the Interface**:
+   - Select a use case from the sidebar
+   - Enter your question or input in the text area
+   - Click "Submit" to send the request to the backend
+   - View the response in the main area
+
+The GUI automatically detects available interfaces from the `interfaces/` directory and provides a user-friendly way to interact with them.
