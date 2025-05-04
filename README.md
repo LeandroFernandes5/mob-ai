@@ -4,6 +4,7 @@ This repository is an illustrative example of a generic AI platform for handling
 
 ## Features
 
+- **Modular Interface Configuration**: Each interface has its own directory with dedicated configuration files.
 - **Flexible Configuration Manager**: Map any user interface ID to a specific system prompt and model.
 - **Prompt Orchestration**: Combine system prompts, user input, and optional external data for best results.
 - **Model Adapter**: Abstract calls to multiple AI models (OpenAI, local LLMs, etc.) behind a single interface.
@@ -47,6 +48,45 @@ Refer to the design diagram in our documentation for more details. The system bo
      python -m tests.test_model_integration
      ```
 
+## Interface Configuration
+
+The platform uses a directory-based configuration system where each interface has its own dedicated configuration:
+
+1. **Directory Structure**:
+   ```
+   interfaces/
+   ├── at_risk/
+   │   └── config.yaml
+   ├── your_interface/
+   │   └── config.yaml
+   ```
+
+2. **Configuration Format**:
+   Each interface's `config.yaml` should follow this structure:
+   ```yaml
+   model_providers:
+     openai:
+       model: gpt-3.5-turbo
+       api_key: OPENAI_API_KEY
+       system_prompt: |
+         Your system prompt here
+     local_model:
+       model_type: ollama
+       base_url: http://localhost:11434
+       model: llama3
+       system_prompt: "Your system prompt here"
+   ```
+
+3. **Using Interfaces**:
+   When making API requests, specify the interface ID (which matches the directory name):
+   ```json
+   {
+     "interface_id": "at_risk",
+     "model_provider": "openai",
+     "question": "Your question here"
+   }
+   ```
+
 ## OpenAI Integration
 
 The platform now supports integration with OpenAI's API to fetch external data based on user queries. To use this feature:
@@ -79,16 +119,15 @@ The platform supports integration with locally-hosted models through services li
    - Install Ollama from [ollama.ai](https://ollama.ai)
    - Pull a model: `ollama pull llama3`
 
-2. **Configure in config.yaml**:
+2. **Configure in Interface Config**:
+   Add the following to your interface's `config.yaml`:
    ```yaml
-   interfaces:
-     your_interface:
-       model_providers:
-         local_model:
-           model_type: ollama  # Type of local model service
-           base_url: http://localhost:11434  # URL where Ollama is running
-           model: llama3  # Name of the model in your local service
-           system_prompt: "Your system prompt here"
+   model_providers:
+     local_model:
+       model_type: ollama  # Type of local model service
+       base_url: http://localhost:11434  # URL where Ollama is running
+       model: llama3  # Name of the model in your local service
+       system_prompt: "Your system prompt here"
    ```
 
 3. **Use in API Requests**:
