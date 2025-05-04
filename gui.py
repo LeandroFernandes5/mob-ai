@@ -53,7 +53,7 @@ def send_request(interface_id: str, question: str) -> str:
     """
     try:
         response = requests.post(
-            f"{API_URL}/query",
+            f"{API_URL}/v1/query",
             json={
                 "interface_id": interface_id,
                 "model_provider": "openai",  # Default to OpenAI, could be made configurable

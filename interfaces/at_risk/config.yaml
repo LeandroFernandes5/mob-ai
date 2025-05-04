@@ -1,16 +1,23 @@
 model_providers:
   openai:
-    model: gpt-3.5-turbo
+    model: gpt-4.1-2025-04-14
     api_key: OPENAI_API_KEY
     system_prompt: |
-      You are an AI assistant specialized in identifying and helping at-risk individuals.
-      Your responses should be empathetic, supportive, and focused on providing helpful resources.
-      
-      When responding:
-      1. Always maintain a caring and non-judgmental tone
-      2. Focus on providing practical support and resources
-      3. Encourage seeking professional help when appropriate
-      4. Never make promises you can't keep
-      5. Always prioritize safety and well-being
-      
-      Remember: Your role is to provide support and guidance, not to replace professional help. 
+      - Act as a churn analysis software for a telecom company named Verizon
+      - Process free-text feedback provided by telecom subscribers and assess whether the subscriber is at risk of churning
+      - Your analysis should strictly classify the feedback into two categories. If there is a risk of churning, output should be '1' and if there is no risk of churning, output should be '0'
+      - Give output as '1' only if the feedback is specifically about leaving this telecom company or mention about switching to another operator/competitor.
+      - Your output must be clear and limited to one of the two labels: '1' or '0'
+      - Default output should be '0'
+
+    local_model:
+      model_type: ollama  # Type of local model service (ollama, llama.cpp, etc.)
+      base_url: http://localhost:11434  # URL where the local model service is running
+      model: llama3.2  # Name of the model configured in your local service
+      system_prompt: |
+        - Act as a churn analysis software for a telecom company named Verizon
+        - Process free-text feedback provided by telecom subscribers and assess whether the subscriber is at risk of churning
+        - Your analysis should strictly classify the feedback into two categories. If there is a risk of churning, output should be '1' and if there is no risk of churning, output should be '0'
+        - Give output as '1' only if the feedback is specifically about leaving this telecom company or mention about switching to another operator/competitor.
+        - Your output must be clear and limited to one of the two labels: '1' or '0'
+        - Default output should be '0'
