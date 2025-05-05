@@ -57,7 +57,7 @@ def send_request(interface_id: str, question: str) -> str:
             json={
                 "interface_id": interface_id,
                 "model_provider": "openai",  # Default to OpenAI, could be made configurable
-                "question": question
+                "message": question
             }
         )
         response.raise_for_status()
