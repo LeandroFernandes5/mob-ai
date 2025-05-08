@@ -100,7 +100,7 @@ def fetch_external_data(context: dict) -> str:
                 "Preparing to send API request to %s | interface_id=%s | model=%s | system_prompt_preview=%s | question=%s | apikey=%s",
                 model_provider,
                 interface_id,
-                model_config.get('model', 'gpt-3.5-turbo'),
+                model_config.get('model'),
                 (system_prompt[:60] + '...') if system_prompt and len(system_prompt) > 60 else system_prompt,
                 question,
                 api_key
@@ -117,7 +117,15 @@ def fetch_external_data(context: dict) -> str:
 
             # Extract and return the response text
             if response.choices and len(response.choices) > 0:
-                return f"{model_provider.capitalize()} response: {response.choices[0].message.content}"
+                response_content = response.choices[0].message.content
+                # Log the response
+                logging.info(
+                    "Received response from OpenAI | interface_id=%s | model=%s | response=%s",
+                    interface_id,
+                    model_config.get('model'),
+                    response_content
+                )
+                return response_content
             else:
                 return f"No response received from {model_provider}."
 

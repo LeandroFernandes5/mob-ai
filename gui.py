@@ -110,7 +110,7 @@ if selected_interface:
         if user_input.strip():
             with st.spinner("Processing your request..."):
                 response = send_request(selected_interface, user_input)
-                st.markdown("### Response")
+                st.markdown("### Response:")
                 st.markdown(response)
         else:
             st.warning("Please enter some text before submitting.") 
