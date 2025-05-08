@@ -74,7 +74,7 @@ st.set_page_config(
 )
 
 # Title
-st.title("AI Platform Interface")
+#st.title("AI Platform Interface")
 
 # Sidebar
 st.sidebar.title("Use Cases")
@@ -83,21 +83,20 @@ available_interfaces = get_available_interfaces()
 if not available_interfaces:
     st.sidebar.error("No interfaces found! Please check your interfaces directory.")
 else:
-    # Interface selection
-    selected_interface = st.sidebar.selectbox(
+    # Interface selection using radio buttons
+    selected_interface = st.sidebar.radio(
         "Select a Use Case",
-        available_interfaces
+        available_interfaces,
+        label_visibility="collapsed"  # Hide the "Select a Use Case" label since we have the title
     )
-    
-    # Display interface description if available
-    interface_config = get_interface_config(selected_interface)
-    if interface_config:
-        st.sidebar.markdown("### Description")
-        st.sidebar.markdown(interface_config.get("description", "No description available."))
 
 # Main content area
 if selected_interface:
-    st.header(f"Use Case: {selected_interface}")
+    # Display interface description in main content
+    interface_config = get_interface_config(selected_interface)
+    if interface_config and "description" in interface_config:
+        st.markdown(" **Description:** " + interface_config["description"])
+        #st.markdown(interface_config["description"])
     
     # Text input
     user_input = st.text_area(
