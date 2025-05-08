@@ -1,4 +1,4 @@
-description: "This use case helps let's you submit a survey response from a subscriber and identify if they are at risk of churning"
+description: "This use case let's you submit a survey response from a subscriber and identify if they are at risk of churning"
 model_providers:
   openai:
     model: gpt-4.1-2025-04-14
