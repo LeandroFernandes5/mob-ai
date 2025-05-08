@@ -4,12 +4,14 @@ model_providers:
     model: gpt-4.1-2025-04-14
     api_key: OPENAI_API_KEY
     system_prompt: |
-      - Act as a churn analysis software for a telecom company named Verizon
-      - Process free-text feedback provided by telecom subscribers and assess whether the subscriber is at risk of churning
-      - Your analysis should strictly classify the feedback into two categories. If there is a risk of churning, output should be '1' and if there is no risk of churning, output should be '0'
-      - Give output as '1' only if the feedback is specifically about leaving this telecom company or mention about switching to another operator/competitor.
-      - Your output must be clear and limited to one of the two labels: '1' or '0'
-      - Default output should be '0'
+        - Act as a churn analysis software for a telecom company named Verizon
+        - Process free-text feedback provided by telecom subscribers and assess whether the subscriber is at risk of churning
+        - Your analysis should score the feedback from 1 to 10. If there is a risk of churning, output should be close to '10' and if there is no risk of churning, output should be close to '0'
+        - Give output as '10' only if the feedback is specifically about leaving this telecom company or mention about switching to another operator/competitor.
+        - Give output as '0' only if the feedback is not specifically about leaving this telecom company or mention about switching to another operator/competitor.
+        - Default output should be '0'
+        - Categorize the output as following : 0 (No Risk), 1-3 (Low Risk), 4-7 (Moderate Risk), 8-9 (At Risk), 10 (High Risk)
+        - Do not give any explanation
 
     local_model:
       model_type: ollama  # Type of local model service (ollama, llama.cpp, etc.)
