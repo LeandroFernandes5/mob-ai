@@ -41,22 +41,61 @@ To use the OpenAI integration, include a `question` key in the user context when
 ```python
 payload = {
     "interface_id": "cs_support",
-    "user_input": "Tell me about cloud computing services.",
-    "user_context": {
-        "user_id": "user123",
-        "question": "What are the main types of cloud computing services and their differences?"
-    }
+    "model_provider": "openai",
+    "question": "What are the main types of cloud computing services?"
 }
 ```
 
-The `question` will be sent to OpenAI, and the response will be included in the context for the AI model.
+The `question` will be sent to OpenAI, and the response will be returned.
 
 ### How It Works
 
-1. When a request is received with a `question` in the user context, the system calls the `fetch_external_data` function.
-2. The function makes an API call to OpenAI with the question.
-3. The response from OpenAI is added to the user context as `external_data`.
-4. The prompt orchestrator includes this external data in the prompt for the AI model.
+1. When a request is received, the system calls the `fetch_external_data` function in `external_integration.py`.
+2. The function validates the configuration for the specified interface and model provider.
+3. The function makes an API call to OpenAI with the system prompt from the configuration and the user's question.
+4. The response from OpenAI is returned and logged.
+
+## Configuration
+
+Each interface must have a configuration file at `interfaces/<interface_id>/config.yaml` with the following structure:
+
+```yaml
+description: "Interface description"
+model_providers:
+  openai:
+    model: gpt-4.1-2025-04-14  # Specify the model to use
+    api_key: OPENAI_API_KEY     # Environment variable containing the API key
+    system_prompt: |
+      Your system prompt here
+```
+
+The system will validate the configuration and provide specific error messages if any required fields are missing.
+
+## Logging
+
+The integration uses structured logging in JSON format with the following information:
+
+- `correlation_id`: Unique identifier for tracing request-response pairs
+- `event`: Type of event (api_request, api_response)
+- `model_provider`: The provider being used (openai, local_model)
+- `interface_id`: The interface being used
+- `model`: The specific model being used
+- `question`: The user's question (for requests)
+- `response`: The model's response (for responses)
+
+These logs can be parsed and analyzed to track usage and performance.
+
+## Error Handling
+
+The integration includes comprehensive error handling with specific error messages for different types of failures:
+
+- Configuration validation errors
+- API key errors
+- Connection errors
+- Import errors for model clients
+- Response content errors
+
+Error messages are clearly formatted and include suggestions for fixes when possible.
 
 ## Testing
 
@@ -72,11 +111,7 @@ This script sends a request to the API with a question about cloud computing ser
 
 ### Modifying the OpenAI Request
 
-You can customize the OpenAI request by modifying the `fetch_external_data` function in `external_integration.py`. For example, you can change the model, adjust the maximum number of tokens, or modify the system prompt.
-
-### Error Handling
-
-The integration includes basic error handling. If the OpenAI API call fails, the function returns an error message that is included in the response.
+You can customize the OpenAI request by modifying the `fetch_external_data` function in `external_integration.py`. For example, you can change the model, adjust parameters, or add custom headers.
 
 ## Limitations
 

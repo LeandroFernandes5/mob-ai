@@ -10,6 +10,8 @@ This repository is an illustrative example of a generic AI platform for handling
 - **Model Adapter**: Abstract calls to multiple AI models (OpenAI, local LLMs, etc.) behind a single interface.
 - **Response Handling**: Simple post-processing logic to format and filter AI outputs.
 - **External Integration**: Integration with OpenAI API to fetch external data based on user queries.
+- **Structured Logging**: JSON-formatted logs with correlation IDs for request tracking and analysis.
+- **Robust Error Handling**: Comprehensive validation and specific error messages for different failure types.
 
 ## Architecture
 
@@ -19,11 +21,7 @@ Refer to the design diagram in our documentation for more details. The system bo
 
 1. **Install Dependencies**:
    ```bash
-   # Using pip
-   pip install -e .
-   
-   # Or using uv
-   uv pip install -e .
+   uv sync
    ```
 
 2. **Set Up OpenAI API Key**:
@@ -89,10 +87,20 @@ The platform uses a directory-based configuration system where each interface ha
 
 ## OpenAI Integration
 
-The platform now supports integration with OpenAI's API to fetch external data based on user queries. To use this feature:
+The platform supports integration with OpenAI's API for processing user queries. To use this feature:
 
-1. Include a `question` key in the user context when making a request to the API.
-2. The question will be sent to OpenAI, and the response will be included in the context for the AI model.
+1. Ensure your `config.yaml` has a properly configured `openai` section with model, API key, and system prompt.
+2. When making API requests, include the `model_provider` set to "openai":
+   ```json
+   {
+     "interface_id": "at_risk",
+     "model_provider": "openai",
+     "question": "Your question here"
+   }
+   ```
+3. The platform will validate your configuration, make the API call, and return the response.
+
+All requests and responses are logged with correlation IDs for easy tracking and analysis.
 
 ### SSL Verification Control
 
